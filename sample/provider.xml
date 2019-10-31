@@ -29,8 +29,7 @@
                         <entry key="delay" value="50"/>
                         <entry key="return">
                             <value>
-                                {"orderType":33,"orderId":"123","feeInfo":[{"fee":1,"name":"xxx"}],"totalFee":1,"timestamp":"2019-10-22
-                                19:00:00"}
+                                {"orderType":33,"orderId":"123","feeInfo":[{"fee":1,"name":"xxx"}],"totalFee":1,"timestamp":"2019-10-22 19:00:00"}
                             </value>
                         </entry>
                     </map>
