@@ -1,4 +1,4 @@
-package com.mamba.dubbo.provider.mock;
+package com.mamba.mocking.dubbo.provider;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -12,14 +12,14 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class GenericDubboProvider {
+public class MockDubboProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenericDubboProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockDubboProvider.class);
 
     @Parameter(names = {"-jar"}, description = "jar path", required = true)
     private String jarFile;
 
-    @Parameter(names = {"-provider"}, description = "provider file", required = true)
+    @Parameter(names = {"-cfg", "--provider"}, description = "provider file", required = true)
     private File providerFile;
 
     public void serve() throws Exception {
@@ -30,8 +30,8 @@ public class GenericDubboProvider {
             GenericXmlApplicationContext context = new GenericXmlApplicationContext(providerResource);
             context.start();
             LOGGER.info("dubbo provider is started...");
-            synchronized (GenericDubboProvider.class) {
-                GenericDubboProvider.class.wait();
+            synchronized (MockDubboProvider.class) {
+                MockDubboProvider.class.wait();
             }
             context.stop();
         }
@@ -47,7 +47,7 @@ public class GenericDubboProvider {
     }
 
     public static void main(String... args) throws Exception {
-        GenericDubboProvider provider = new GenericDubboProvider();
+        MockDubboProvider provider = new MockDubboProvider();
         JCommander.newBuilder().addObject(provider).build().parse(args);
         provider.serve();
     }

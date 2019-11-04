@@ -17,25 +17,27 @@
     <dubbo:protocol name="dubbo" port="20880" threads="5000"/>
 
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service ref="paymentService" interface="com.xxx.api.service.PaymentService" version="1.0"/>
+    <dubbo:service ref="paymentService" interface="com.mamba.mocking.dubbo.api.service.PaymentService" version="1.0"/>
 
     <!-- 和本地bean一样实现服务 -->
-    <bean id="paymentService" class="com.mamba.dubbo.provider.mock.GenericServiceFactoryBean">
-        <constructor-arg name="interfaceType" value="com.xxx.api.service.PaymentService"/>
+    <bean id="paymentService" class="com.mamba.mocking.dubbo.provider.MockServiceFactoryBean">
+        <constructor-arg name="interfaceType" value="com.mamba.mocking.dubbo.api.service.PaymentService"/>
         <constructor-arg name="mockMethodMap">
             <map>
-                <entry key="create(com.xxxx.api.dto.request.RequestDTO)">
+                <entry key="create(com.mamba.mocking.dubbo.api.dto.request.PaymentCreateRequest)">
                     <map>
                         <entry key="delay" value="50"/>
                         <entry key="return">
                             <value>
+                                <![CDATA[
                                 {"orderType":33,"orderId":"123","feeInfo":[{"fee":1,"name":"xxx"}],"totalFee":1,"timestamp":"2019-10-22 19:00:00"}
+                                ]]>
                             </value>
                         </entry>
                     </map>
                 </entry>
             </map>
         </constructor-arg>
-        <constructor-arg name="defaultDelay" value="50"/>
+        <constructor-arg name="defaultDelay" value="20"/>
     </bean>
 </beans>

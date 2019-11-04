@@ -1,4 +1,4 @@
-package com.mamba.dubbo.provider.mock;
+package com.mamba.mocking.dubbo.provider;
 
 import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
@@ -17,19 +17,19 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class GenericServiceFactoryBean<T> implements FactoryBean<T> {
+public class MockServiceFactoryBean<T> implements FactoryBean<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenericServiceFactoryBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockServiceFactoryBean.class);
 
     private final Class<T> interfaceType;
 
     private MockInvocation mockInvocation;
 
-    public GenericServiceFactoryBean(Class<T> interfaceType, Map<String, Map<String, String>> mockMethodMap) {
+    public MockServiceFactoryBean(Class<T> interfaceType, Map<String, Map<String, String>> mockMethodMap) {
         this(interfaceType, mockMethodMap, 0);
     }
 
-    public GenericServiceFactoryBean(Class<T> interfaceType, Map<String, Map<String, String>> mockMethodMap, int defaultDelay) {
+    public MockServiceFactoryBean(Class<T> interfaceType, Map<String, Map<String, String>> mockMethodMap, int defaultDelay) {
         MockReturn mockReturnDefault = new MockReturn(Math.max(defaultDelay, 0), null);
         Map<Method, MockReturn> mockReturnMap = genMockReturnMap(interfaceType, mockMethodMap, mockReturnDefault.getDelay());
         this.interfaceType = interfaceType;
@@ -56,7 +56,7 @@ public class GenericServiceFactoryBean<T> implements FactoryBean<T> {
         if (mockMethodMap == null || mockMethodMap.isEmpty()) {
             return Collections.emptyMap();
         }
-        Map<String, Method> methodMap = Arrays.stream(interfaceType.getDeclaredMethods()).collect(Collectors.toMap(GenericServiceFactoryBean::genMethodIndex, Function.identity()));
+        Map<String, Method> methodMap = Arrays.stream(interfaceType.getDeclaredMethods()).collect(Collectors.toMap(MockServiceFactoryBean::genMethodIndex, Function.identity()));
         Map<Method, MockReturn> mockReturnMap = new HashMap<>((int) Math.ceil(mockMethodMap.size() / 0.75));
         for (Map.Entry<String, Map<String, String>> mockMethodEntry : mockMethodMap.entrySet()) {
             Map<String, String> mockReturn = mockMethodEntry.getValue();
